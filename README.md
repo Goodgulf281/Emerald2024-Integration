@@ -1,5 +1,10 @@
 # Instructions for integrating A Star Pathfinding Project into Emerald 2024
 
+## References
+
+* A Star Pathfinding Project by Aron Granberg: https://www.arongranberg.com/astar/docs/index.html
+* Emerald AI 2024 by Black Horizon Studios: https://assetstore.unity.com/packages/tools/behavior-ai/emerald-ai-2024-268519
+
 ## Pre-requisites
 
 * Import Emerald 2024 into your Unity project.
