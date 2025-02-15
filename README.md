@@ -21,6 +21,7 @@ Copy the following Emerald Script files files from the project to a temporary fo
 Then download the diff files for the right version of Emerald from this Github repo.
 If you are running Unity on a Windows machine you can get diff/patch binaries easily (use Google).
 Instructions on how to patch the files can be found here [Patch and Diff](https://www.pair.com/support/kb/paircloud-diff-and-patch/) or just Google it.
+I have used [Meld](https://meldmerge.org/) for the 1.3.0 patch files.
 
 Patch the three above list files and copy them back into your project. Also include my NavMeshAgentImposter.cs.
 
