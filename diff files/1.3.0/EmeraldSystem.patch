@@ -1,0 +1,59 @@
+--- C:\Users\davek\AppData\Local\Temp\meld-tmpjqniiai0.cs
++++ E:\Emerald1.3\patched\EmeraldSystem.cs
+@@ -3,6 +3,10 @@
+ using UnityEngine.AI;
+ using EmeraldAI.Utility;
+ using EmeraldAI.SoundDetection;
++#if ASTAR
++using Pathfinding; // DKE: Referencing the AStarPathfinding code. If necessary also update your code assemblies.
++#endif
++
+ 
+ namespace EmeraldAI
+ {
+@@ -43,7 +47,11 @@
+         #region Internal Components
+         public static GameObject ObjectPool;
+         public static GameObject CombatTextSystemObject;
++#if ASTAR
++        [HideInInspector] public NavMeshAgentImposter m_NavMeshAgent; // DKE
++#else      
+         [HideInInspector] public NavMeshAgent m_NavMeshAgent;
++#endif  
+         [HideInInspector] public BoxCollider AIBoxCollider;
+         [HideInInspector] public Animator AIAnimator;
+         [HideInInspector] public float TimeSinceEnabled;
+@@ -88,13 +96,32 @@
+             InverseKinematicsComponent = GetComponent<EmeraldInverseKinematics>();
+             CoverComponent = GetComponent<EmeraldCover>();
+             TPMComponent = GetComponent<TargetPositionModifier>();
++#if ASTAR
++            m_NavMeshAgent = GetComponent<NavMeshAgentImposter>();  // DKE
++            if (m_NavMeshAgent == null)
++            {
++                Debug.LogWarning($"EmeraldSystem.Awake(): No AIPath(derived) component found on this GameObject {this.name}");
++                m_NavMeshAgent = gameObject.AddComponent<NavMeshAgentImposter>();
++                //m_NavMeshAgent.areaMask = LayerMask.GetMask("Default");
++                //m_NavMeshAgent.groundMask = LayerMask.GetMask("Default");
++                m_NavMeshAgent.Initialize();
++            }
++#else            
+             m_NavMeshAgent = GetComponent<NavMeshAgent>();
++#endif  
+             AIBoxCollider = GetComponent<BoxCollider>();
+             AIAnimator = GetComponent<Animator>();
+             InitializeEmeraldObjectPool();
+             InitializeCombatText();
+         }
+ 
++#if FISHNET_INTEGRATION
++        public void ReAwaken()
++        {
++            Awake();
++        }
++#endif
++       
+         void OnEnable()
+         {
+             TimeSinceEnabled = Time.time; //Time stamp when the AI was enabled.
+

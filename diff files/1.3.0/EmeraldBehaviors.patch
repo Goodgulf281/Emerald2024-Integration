@@ -1,0 +1,17 @@
+--- C:\Users\davek\AppData\Local\Temp\meld-tmpmm6uyr1l.cs
++++ E:\Emerald1.3\patched\EmeraldBehaviors.cs
+@@ -68,6 +68,13 @@
+             InitailizeBehaviors();
+         }
+ 
++#if FISHNET_INTEGRATION
++        public void ReStart()
++        {
++            Start();
++        }
++#endif
++        
+         /// <summary>
+         /// Initialize the Behavior Component.
+         /// </summary>
+

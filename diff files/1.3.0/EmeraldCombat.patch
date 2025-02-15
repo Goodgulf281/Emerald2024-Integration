@@ -1,0 +1,41 @@
+--- C:\Users\davek\AppData\Local\Temp\meld-tmp89xoxnzu.cs
++++ E:\Emerald1.3\patched\EmeraldCombat.cs
+@@ -118,7 +118,12 @@
+         {
+             InitializeCombat();
+         }
+-
++#if FISHNET_INTEGRATION
++        public void ReStart()
++        {
++            Start();
++        }
++#endif
+         /// <summary>
+         /// Initialize the Combat Component.
+         /// </summary>
+@@ -282,6 +287,11 @@
+         /// </summary>
+         public void CreateAbility(AnimationEvent AttackEventParameters)
+         {
++#if UNITY_SERVER
++            // Execute this event on the server only
++#elif FISHNET_INTEGRATION
++            return; // do nothing if this is client side            
++#endif            
+             //Allow the objectReferenceParameter to override the current ability
+             if (AttackEventParameters.objectReferenceParameter != null)
+             {
+@@ -297,6 +307,11 @@
+         /// </summary>
+         public void ChargeEffect(AnimationEvent AttackEventParameters)
+         {
++#if UNITY_SERVER
++            // Execute this event on the server only
++#elif FISHNET_INTEGRATION
++            return; // do nothing if this is client side            
++#endif            
+             Transform AttackTransform = EmeraldCombatManager.GetAttackTransform(EmeraldComponent, AttackEventParameters.stringParameter); //Gets the weapon transform based on the sent AttackTransformName from an EmeraldChargeAttack Animation Event.
+             if (CurrentEmeraldAIAbility != null && AttackTransform != null) CurrentEmeraldAIAbility.ChargeAbility(gameObject, AttackTransform); //Invoke the ability's charge, if the ability slot is not emepty.
+         }
+

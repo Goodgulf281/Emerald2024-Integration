@@ -1,0 +1,47 @@
+--- C:\Users\davek\AppData\Local\Temp\meld-tmpzb8nlvda.cs
++++ E:\Emerald1.3\patched\EmeraldSounds.cs
+@@ -21,6 +21,9 @@
+         EmeraldSystem EmeraldComponent;
+         EmeraldHealth EmeraldHealth;
+         EmeraldItems EmeraldItems;
++#if FISHNET_INTEGRATION
++        private FishnetSoundBridge m_fishnetSoundBridge;
++#endif          
+         #endregion
+ 
+         void Awake()
+@@ -66,6 +69,15 @@
+             m_EventAudioSource.minDistance = m_AudioSource.minDistance;
+             m_EventAudioSource.maxDistance = m_AudioSource.maxDistance;
+             m_EventAudioSource.rolloffMode = m_AudioSource.rolloffMode;
++#if FISHNET_INTEGRATION
++            m_fishnetSoundBridge= GetComponent<FishnetSoundBridge>();
++            if (m_fishnetSoundBridge == null)
++            {
++                Debug.LogError("EmeraldSounds.InitializeSounds(): no FishnetSoundBridge found");
++                return;
++            }
++            m_fishnetSoundBridge.InitializeSoundBridge(this);
++#endif               
+         }
+ 
+         /// <summary>
+@@ -186,6 +198,9 @@
+         {
+             if (SoundProfile.AttackSounds.Count > 0)
+             {
++#if FISHNET && UNITY_SERVER
++                m_fishnetSoundBridge.PlayOneShot(FishnetSoundBridge.SoundProfileCategory.Attack, Random.Range(0, SoundProfile.AttackSounds.Count));                
++#else                
+                 if (!m_AudioSource.isPlaying)
+                 {
+                     m_AudioSource.volume = SoundProfile.AttackVolume;
+@@ -202,6 +217,7 @@
+                     m_EventAudioSource.volume = SoundProfile.AttackVolume;
+                     m_EventAudioSource.PlayOneShot(SoundProfile.AttackSounds[Random.Range(0, SoundProfile.AttackSounds.Count)]);
+                 }
++#endif                
+             }
+         }
+ 
+

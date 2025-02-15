@@ -1,0 +1,161 @@
+--- C:\Users\davek\AppData\Local\Temp\meld-tmpl5xz4zas.cs
++++ E:\Emerald1.3\patched\EmeraldAnimation.cs
+@@ -2,6 +2,9 @@
+ using System.Collections.Generic;
+ using UnityEngine;
+ using EmeraldAI.Utility;
++#if FISHNET_INTEGRATION
++using FishNet.Component.Animating;
++#endif
+ 
+ namespace EmeraldAI
+ {
+@@ -67,11 +70,28 @@
+         public bool AnimationProfileFoldout;
+         #endregion
+ 
++#if FISHNET_INTEGRATION
++        private NetworkAnimator _networkAnimator;
++#endif        
++        
+         void Start()
+         {
+             InitailizeAnimations();
+             SetupAnimator();
+-        }
++#if FISHNET_INTEGRATION
++            _networkAnimator = GetComponent<NetworkAnimator>();
++            if (_networkAnimator == null)
++                Debug.LogError("EmeraldAnimation.ReStart(): cannot find network animator");
++#endif
++        }
++
++#if FISHNET_INTEGRATION
++        public void ReStart()
++        {
++            Start();
++        }
++#endif
++
+ 
+         /// <summary>
+         /// Initialize the Animation Component.
+@@ -300,6 +320,10 @@
+                 return;
+ 
+             AIAnimator.SetTrigger("Warning");
++#if FISHNET_INTEGRATION
++            if (_networkAnimator)
++                _networkAnimator.SetTrigger("Warning");
++#endif            
+             WarningAnimationTriggered = true;
+         }
+ 
+@@ -356,6 +380,10 @@
+             }
+ 
+             AIAnimator.SetTrigger("Dead");
++#if FISHNET_INTEGRATION
++            if (_networkAnimator)
++                _networkAnimator.SetTrigger("Dead");
++#endif            
+         }
+ 
+         /// <summary>
+@@ -430,11 +458,19 @@
+                     AttackTriggered = false;
+ 
+                     AIAnimator.SetTrigger("Hit");
++#if FISHNET_INTEGRATION
++                    if (_networkAnimator)
++                        _networkAnimator.SetTrigger("Hit");
++#endif                    
+                     OnGetHit?.Invoke();
+                 }
+             }
+ 
+             AIAnimator.ResetTrigger("Attack");
++#if FISHNET_INTEGRATION
++            if (_networkAnimator)
++                _networkAnimator.ResetTrigger("Attack");
++#endif
+         }
+ 
+         void ResetInternalHit()
+@@ -453,6 +489,10 @@
+ 
+             AIAnimator.SetInteger("Attack Index", EmeraldComponent.CombatComponent.CurrentAnimationIndex + 1);
+             AIAnimator.SetTrigger("Attack");
++#if FISHNET_INTEGRATION
++            if (_networkAnimator)
++                _networkAnimator.SetTrigger("Attack");
++#endif
+             AttackTriggered = true;
+         }
+ 
+@@ -556,6 +596,13 @@
+                 AIAnimator.ResetTrigger("Attack");
+                 AIAnimator.SetTrigger("Recoil");
+                 OnRecoil?.Invoke();
++#if FISHNET_INTEGRATION
++                if (_networkAnimator)
++                {
++                    _networkAnimator.ResetTrigger("Attack");
++                    _networkAnimator.SetTrigger("Recoil");
++                }
++#endif                
+             }
+         }
+ 
+@@ -581,6 +628,10 @@
+             AIAnimator.SetBool("Strafe Active", State);
+             if (State) AIAnimator.SetInteger("Strafe Direction", Direction);
+             if (State) AIAnimator.SetTrigger("Strafing Triggered");
++#if FISHNET_INTEGRATION
++            if (_networkAnimator && State)
++                _networkAnimator.SetTrigger("Strafing Triggered");
++#endif            
+         }
+ 
+         /// <summary>
+@@ -622,6 +673,10 @@
+             AIAnimator.SetInteger("Dodge Direction", Direction);
+             AIAnimator.SetTrigger("Dodge Triggered");
+             AIAnimator.SetBool("Walk Backwards", false);
++#if FISHNET_INTEGRATION
++            if (_networkAnimator)
++                _networkAnimator.SetTrigger("Dodge Triggered");
++#endif            
+         }
+ 
+         /// <summary>
+@@ -652,6 +707,17 @@
+             EmeraldComponent.AIAnimator.ResetTrigger("Strafing Triggered");
+             EmeraldComponent.AIAnimator.SetBool("Strafe Active", false);
+             EmeraldComponent.AIAnimator.ResetTrigger("Attack Cancelled");
++            
++#if FISHNET_INTEGRATION
++            if (_networkAnimator)
++            {
++                _networkAnimator.ResetTrigger("Hit");
++                _networkAnimator.ResetTrigger("Attack");
++                _networkAnimator.ResetTrigger("Dodge Triggered");
++                _networkAnimator.ResetTrigger("Strafing Triggered");
++                _networkAnimator.ResetTrigger("Attack Cancelled");
++            }
++#endif
+         }
+ 
+         /// <summary>
+@@ -676,6 +742,10 @@
+                 {
+                     AIAnimator.SetInteger("Emote Index", EmoteAnimationID);
+                     AIAnimator.SetTrigger("Emote Trigger");
++#if FISHNET_INTEGRATION
++                    if (_networkAnimator)
++                        _networkAnimator.SetTrigger("Emote Trigger");
++#endif                         
+                     IsMoving = false;
+                 }
+             }
+
