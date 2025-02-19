@@ -17,6 +17,10 @@ Copy the following Emerald Script files files from the project to a temporary fo
 * EmeraldSystem.cs
 * EmeraldMovement.cs
 * EmeraldDebugger.cs
+* EmeraldAnimation.cs
+* EmeraldBehaviors.cs
+* EmeraldSound.cs
+* EmeraldCombat.cs
 
 Then download the diff files for the right version of Emerald from this Github repo.
 If you are running Unity on a Windows machine you can get diff/patch binaries easily (use Google).
