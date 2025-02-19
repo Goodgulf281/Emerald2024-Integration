@@ -36,6 +36,6 @@ Add an ASTAR scripting define symbol to the project settings and all should work
 
 ## Important notes
 
-I have updated the files for two versions of Emerald 2024. These diff files are pretty much readable so it should be possible to patch future versions manually.
+I have updated the files for three versions of Emerald 2024. These diff files are pretty much readable so it should be possible to patch future versions manually.
 I will not be keeping track of updates to Emerald 2024 and update these regularly. I have sent a message to the devs from Black Horizon Studios and offered the integration for free.
 If they include it in their code it will be much easier to keep it up to date. To date they have not responded or shown any interest. 
