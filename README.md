@@ -8,7 +8,7 @@
 ## Pre-requisites
 
 * Import Emerald 2024 into your Unity project.
-* Import AStar Pathfining Project into your Unity project.
+* Import AStar Pathfining Project into your Unity project. (I used the Pro version; it may work on the Free version but I did not test it).
 
 
 ## Patch the files
