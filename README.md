@@ -25,9 +25,14 @@ Copy the following Emerald Script files files from the project to a temporary fo
 Then download the diff files for the right version of Emerald from this Github repo.
 If you are running Unity on a Windows machine you can get diff/patch binaries easily (use Google).
 Instructions on how to patch the files can be found here [Patch and Diff](https://www.pair.com/support/kb/paircloud-diff-and-patch/) or just Google it.
-I have used [Meld](https://meldmerge.org/) for the 1.3.0 patch files.
+I have used [Meld](https://meldmerge.org/) for creating the 1.3.0 patch files.
 
-Patch the three above list files and copy them back into your project. Also include my NavMeshAgentImposter.cs.
+I found the easiest way to apply the patch files is to use Git (install it locally on your PC; it is also useful to do your version control necessary to import packages from Github into Unity).
+Just copy the source files and the patch files into a temporary folder and run this command for each of the files:
+![Patch files using Git](./patch_using_git.png?raw=true "Patch files using Git")
+
+
+Patch the files (listed above) and copy them back into your project. Also include my NavMeshAgentImposter.cs.
 
 Create an empty game object in your scene and add the AStarPathfinding component. Add a grid graph and set it up properly.
 
